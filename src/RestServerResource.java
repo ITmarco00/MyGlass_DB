@@ -49,6 +49,24 @@ public class RestServerResource extends ServerResource
         {
             switch (getReference().getLastSegment())
             {
+                case "lentiVis":
+                    response = String.valueOf(dbManager.selectLentiVisive());
+                    break;
+                case "lentiOcc":
+                    response = String.valueOf(dbManager.selectLentiOcchiali());
+                    break;
+                case "occSoleDonna":
+                    response = String.valueOf(dbManager.selectOcchialiSoleDonna());
+                    break;
+                case "occVistaDonna":
+                    response = String.valueOf(dbManager.selectOcchialiVistaDonna());
+                    break;
+                case "occSoleUomo":
+                    response = String.valueOf(dbManager.selectOcchialiSoleUomo());
+                    break;
+                case "occVistaUomo":
+                    response = String.valueOf(dbManager.selectOcchialiVistaUomo());
+                    break;
                 case "checkUser":
                     response = String.valueOf(dbManager.checkUser(getQuery().getValues("username"), getQuery().getValues("password")));
                     break;

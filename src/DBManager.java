@@ -40,7 +40,6 @@ public class DBManager {
             } catch (ClassNotFoundException e) {
                 throw new SQLException(e.getMessage());
             }
-
             connection = DriverManager.getConnection(JDBC_URL);
         }
         return connection;
@@ -126,5 +125,74 @@ public class DBManager {
         return false;
     }
 
+    public boolean selectOcchialiVistaUomo(){
+            try {
+                ResultSet resultSet = statement.executeQuery("SELECT o.descrizione, o.prezzo, o.percorso_immagine FROM occhiale o where o.sesso = 'M' AND o" +
+                        ".tipo_occhiale = (select categoria_id from categoria c where c.nome='occhiali_vista' ) ");
+                return true;
+            }
+            catch (SQLException e)
+            {
+                return false;
+            }
+    }
 
+    public boolean selectOcchialiSoleUomo(){
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT o.descrizione, o.prezzo, o.percorso_immagine FROM occhiale o where o.sesso = 'M' AND o" +
+                    ".tipo_occhiale = (select categoria_id from categoria c where c.nome='occhiali_sole' ) ");
+            return true;
+        }
+        catch (SQLException e)
+        {
+            return false;
+        }
+    }
+    public boolean selectOcchialiVistaDonna(){
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT o.descrizione, o.prezzo, o.percorso_immagine  FROM occhiale o where o.sesso = 'F' AND o" +
+                    ".tipo_occhiale = (select categoria_id from categoria c where c.nome='occhiali_vista' ) ");
+            return true;
+        }
+        catch (SQLException e)
+        {
+            return false;
+        }
+    }
+
+    public boolean selectOcchialiSoleDonna(){
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT o.descrizione, o.prezzo, o.percorso_immagine  FROM occhiale o where o.sesso = 'F' AND o" +
+                    ".tipo_occhiale = (select categoria_id from categoria c where c.nome='occhiali_sole' ) ");
+            return true;
+        }
+        catch (SQLException e)
+        {
+            return false;
+        }
+    }
+
+    public boolean selectLentiOcchiali(){
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT o.descrizione, o.prezzo, o.percorso_immagine  FROM occhiale o where o" +
+                    ".tipo_occhiale = (select categoria_id from categoria c where c.nome='lenti_da_sole' ) ");
+            return true;
+        }
+        catch (SQLException e)
+        {
+            return false;
+        }
+    }
+
+    public boolean selectLentiVisive(){
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT o.descrizione, o.prezzo, o.percorso_immagine  FROM occhiale o where o" +
+                    ".tipo_occhiale = (select categoria_id from categoria c where c.nome='lenti' ) ");
+            return true;
+        }
+        catch (SQLException e)
+        {
+            return false;
+        }
+    }
 }
