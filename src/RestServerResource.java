@@ -1,7 +1,9 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 
+import com.mysql.cj.MysqlConnection;
 import org.json.JSONArray;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
@@ -47,25 +49,27 @@ public class RestServerResource extends ServerResource
         String response = null;
         try
         {
-            switch (getReference().getLastSegment())
+            String request = getReference().getLastSegment();
+
+           switch (request)
             {
                 case "lentiVis":
-                    response = String.valueOf(dbManager.selectLentiVisive());
+                    response = resultset_to_json(dbManager.selectLentiVisive());
                     break;
                 case "lentiOcc":
-                    response = String.valueOf(dbManager.selectLentiOcchiali());
+                    response = resultset_to_json(dbManager.selectLentiOcchiali());
                     break;
                 case "occSoleDonna":
-                    response = String.valueOf(dbManager.selectOcchialiSoleDonna());
+                    response = resultset_to_json(dbManager.selectOcchialiSoleDonna());
                     break;
                 case "occVistaDonna":
-                    response = String.valueOf(dbManager.selectOcchialiVistaDonna());
+                    response = resultset_to_json(dbManager.selectOcchialiVistaDonna());
                     break;
                 case "occSoleUomo":
-                    response = String.valueOf(dbManager.selectOcchialiSoleUomo());
+                    response = resultset_to_json(dbManager.selectOcchialiSoleUomo());
                     break;
                 case "occVistaUomo":
-                    response = String.valueOf(dbManager.selectOcchialiVistaUomo());
+                    response = resultset_to_json(dbManager.selectOcchialiVistaUomo());
                     break;
                 case "checkUser":
                     response = String.valueOf(dbManager.checkUser(getQuery().getValues("username"), getQuery().getValues("password")));
@@ -85,7 +89,12 @@ public class RestServerResource extends ServerResource
 
     public static void main(String[] args)
     {
-        dbManager = new DBManager();
+        try{
+            dbManager = new DBManager();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
         try
         {
             new Server(Protocol.HTTP, 4444, RestServerResource.class).start();
