@@ -53,47 +53,59 @@ public class RestServerResource extends ServerResource
 
            switch (request)
             {
-                case "lentiVis":
-                    response = resultset_to_json(dbManager.selectLentiVisive());
+
+                case "loadShop":
+                    response = resultset_to_json(dbManager.loadShop());
                     break;
-                case "lentiOcc":
-                    response = resultset_to_json(dbManager.selectLentiOcchiali());
+                case"getallCatalogue":
+                    response = resultset_to_json(dbManager.getallCatalogue());
                     break;
-                case "occSoleDonna":
+                case "selectLentiVista":
+                    response = resultset_to_json(dbManager.selectLentiVista());
+                    break;
+                case "selectLentiSole":
+                    response = resultset_to_json(dbManager.selectLentiSole());
+                    break;
+                case "selectOcchialiSoleDonna":
                     response = resultset_to_json(dbManager.selectOcchialiSoleDonna());
                     break;
-                case "occVistaDonna":
+                case "selectOcchialiVistaDonna":
                     response = resultset_to_json(dbManager.selectOcchialiVistaDonna());
                     break;
-                case "occSoleUomo":
+                case "selectOcchialiSoleUomo":
                     response = resultset_to_json(dbManager.selectOcchialiSoleUomo());
                     break;
-                case "occVistaUomo":
+                case "selectOcchialiVistaUomo":
                     response = resultset_to_json(dbManager.selectOcchialiVistaUomo());
                     break;
                 case "checkUser":
                     response = String.valueOf(dbManager.checkUser(getQuery().getValues("username"), getQuery().getValues("password")));
                     break;
                 case "addUser":
-                    response = String.valueOf(dbManager.addUser(getQuery().getValues("name"), getQuery().getValues("surname"), getQuery().getValues("email"), getQuery().getValues("username"), getQuery().getValues("password")));
+                    response = String.valueOf(dbManager.addUser(getQuery().getValues("username"), getQuery().getValues(
+                            "password"), getQuery().getValues("nome"), getQuery().getValues("cognome"),
+                            getQuery().getValues("email")));
+                    break;
+                case "addShop":
+                    response = String.valueOf(dbManager.addShop(getQuery().getValues(
+                                    "occhiale_id")));
+                    break;
+                case "deleteItem":
+                    response = String.valueOf(dbManager.deleteItem(getQuery().getValues(
+                            "occhiale_id")));
                     break;
                 default:
                     throw new ResourceException(new Status(Status.SERVER_ERROR_NOT_IMPLEMENTED, ""));
             }
         } catch (Exception e)
         {
-            System.out.println("[ERROR]" + getReference());
+            System.out.println("[ERROR]" + getReference()+" "+e.getMessage());
         }
         return response;
     }
 
-    public static void main(String[] args)
-    {
-        try{
-            dbManager = new DBManager();
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
+    public static void main(String[] args) throws SQLException {
+        dbManager = new DBManager();
 
         try
         {
